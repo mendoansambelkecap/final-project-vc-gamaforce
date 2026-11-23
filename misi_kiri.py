@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 import argparse
 
+from lib.bagian_akhir import bagian_akhir
 from lib.drone import buat_drone
 from lib.jalur_kiri import jalur_kiri
-from lib.bagian_akhir import bagian_akhir
 
 ap = argparse.ArgumentParser()
 ap.add_argument('--target', type=int, choices=[1, 2, 3], default=None)

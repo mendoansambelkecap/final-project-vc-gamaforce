@@ -13,6 +13,7 @@ Nggak ada koordinat arena di kode. Drone gerak pakai perintah kecepatan lewat MA
 ├── misi_kiri.py      misi penuh jalur kiri (yang dijalanin)
 ├── misi_kanan.py     misi penuh jalur kanan (yang dijalanin)
 ├── peta_arena.png
+├── log/              log tiap kali misi jalan (dibuat otomatis)
 └── lib/              kode pendukung
 ```
 
@@ -83,6 +84,7 @@ python3 randomize.py --model-dir ../../models/Part/obstacles
 ```
 
 ```bash
+sim_env
 export GZ_SIM_RESOURCE_PATH=$HOME/oprec/gazebo_sim/models/Part:$GZ_SIM_RESOURCE_PATH
 gz sim -r world_oprec.world
 ```
@@ -115,6 +117,14 @@ ros2 topic list | grep -E "lidar|camera"
 
 Harus muncul `/lidar_left`, `/lidar_right`, `/lidar_up`, `/lidar_down`, `/lidar_front`, `/lidar_back`, `/camera_front`, `/camera_down`.
 
+Bisa juga pakai `cek_sensor.sh` buat nampilin sensor yang kedeteksi sekaligus ngecek kalau semuanya ada:
+
+```bash
+./cek_sensor.sh
+```
+
+Kalau ada yang kurang, script ini nampilin topic yang hilang dan keluar dengan kode error 1.
+
 ### T4: Misi
 
 Setelah T1 sampai T3 jalan semua:
@@ -129,6 +139,8 @@ python3 misi_kanan.py --target 2
 ```
 
 Misinya ngurus arming dan takeoff sendiri, jadi di console MAVProxy nggak perlu ngetik apa-apa.
+
+Pesan dari drone tetap muncul di terminal, dan juga disimpan ke `log/drone-YYYY-MM-DD-HH-MM-SS.log`. Folder `log/` dibuat sendiri waktu misi jalan, dan tiap kali jalan dapat file baru.
 
 ### Ngulang misi
 
@@ -152,7 +164,7 @@ Kalau `--target` di `misi_kanan.py` kosong, dia baca `target.json`, dan kalau fi
 
 ### Kalau simulasinya lambat
 
-Semua batas waktu di kode dihitung pakai jam biasa. Kalau simulasi jalan lebih lambat dari waktu asli (misalnya laptop tanpa GPU), kaliin batas waktunya pakai `SKALA_WAKTU`:
+Semua batas waktu di kode dihitung pakai jam biasa. Kalau simulasi jalan lebih lambat dari waktu asli (misalnya laptop tanpa GPU, atau menggunakan VM), kaliin batas waktunya pakai `SKALA_WAKTU`:
 
 ```bash
 SKALA_WAKTU=4 python3 misi_kiri.py

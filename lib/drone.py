@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
+import atexit
+import logging
 import math
 import os
+import sys
 import time
+from datetime import datetime
+from pathlib import Path
 
 import numpy as np
 import rclpy
-from rclpy.node import Node
-from rclpy.qos import qos_profile_sensor_data
 from geometry_msgs.msg import PoseStamped
 from mavros_msgs.msg import PositionTarget, State
 from mavros_msgs.srv import CommandBool, CommandTOL, SetMode, StreamRate
+from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
 from sensor_msgs.msg import Image, LaserScan
 
 LIDAR = ['left', 'right', 'up', 'down', 'front', 'back']
@@ -18,6 +23,7 @@ LIDAR_MAX = 10.0
 LIDAR_MIN = 0.12
 DT = 0.05
 SKALA_WAKTU = float(os.environ.get('SKALA_WAKTU', '1'))
+LOG_DIR = Path(__file__).resolve().parent.parent / 'log'
 
 
 def sekarang():
@@ -31,6 +37,7 @@ def batasi(nilai, batas):
 class Drone(Node):
     def __init__(self):
         super().__init__('drone_oprec')
+        self._log = self._buat_logger()
         self.state = State()
         self.x = self.y = self.z = None
         self.yaw = math.pi / 2
@@ -98,8 +105,31 @@ class Drone(Node):
         self.info('TIMEOUT nunggu ' + nama)
         return False
 
+    def _buat_logger(self):
+        LOG_DIR.mkdir(parents=True, exist_ok=True)
+        self.log_path = LOG_DIR / ('drone-' + datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + '.log')
+
+        log = logging.Logger('drone_oprec')
+        log.setLevel(logging.INFO)
+        bentuk = logging.Formatter('%(asctime)s %(levelname)s %(message)s',
+                                   datefmt='%Y-%m-%d %H:%M:%S')
+        berkas = logging.FileHandler(self.log_path)
+        berkas.setFormatter(bentuk)
+        layar = logging.StreamHandler(sys.stdout)
+        layar.setFormatter(bentuk)
+        log.addHandler(berkas)
+        log.addHandler(layar)
+        atexit.register(self._tutup_logger, log)
+        return log
+
+    def _tutup_logger(self, log):
+        for h in list(log.handlers):
+            h.flush()
+            h.close()
+            log.removeHandler(h)
+
     def info(self, teks):
-        self.get_logger().info(teks)
+        self._log.info(teks)
 
     def siap(self):
         self.info('Nunggu MAVROS nyambung...')

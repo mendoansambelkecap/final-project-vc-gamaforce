@@ -85,14 +85,14 @@ def lubang_utuh(bgr, *nama, luas_min=800):
     semua = daftar_lubang(bgr, *nama, luas_min=luas_min)
     if not semua:
         return None
-    return max(semua, key=lambda l: l[2])
+    return max(semua, key=lambda target: target[2])
 
 
 def lubang_terdekat(bgr, titik, *nama, luas_min=800):
     semua = daftar_lubang(bgr, *nama, luas_min=luas_min)
     if not semua:
         return None
-    return min(semua, key=lambda l: (l[0] - titik[0]) ** 2 + (l[1] - titik[1]) ** 2)
+    return min(semua, key=lambda target: (target[0] - titik[0]) ** 2 + (target[1] - titik[1]) ** 2)
 
 
 def lubang_tengah(bgr, *nama, luas_min=1500, ulang=3):

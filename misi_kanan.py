@@ -3,9 +3,9 @@ import argparse
 import json
 import os
 
+from lib.bagian_akhir import bagian_akhir
 from lib.drone import buat_drone
 from lib.jalur_kanan import jalur_kanan
-from lib.bagian_akhir import bagian_akhir
 
 ap = argparse.ArgumentParser()
 ap.add_argument('--target', type=int, choices=[1, 2, 3], default=None)

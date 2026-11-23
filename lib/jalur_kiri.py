@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from lib import vision
 from lib import manuver as m
+from lib import vision
 
 TINGGI_GERBANG = 0.8
 TINGGI_PIPA = 2.2

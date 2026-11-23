@@ -1,3 +1,7 @@
 __pycache__/
 *.pyc
 target.json
+log/
+.venv/
+.ruff_cache/
+gazebo_sim/

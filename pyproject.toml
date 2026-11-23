@@ -1,0 +1,25 @@
+# file pyproject hanya untuk linter
+# dependency untuk ros dan mav diinstal via system, tidak digunakan via uv install 
+# dikarenakan terdapat edge case yang perlu dihandle, dan kami ingin instalasi sesuai standar prosedur oprec gamaforce
+
+[project]
+name = "final-project-vc-gamaforce"
+version = "0.1.0"
+description = "Misi drone Iris untuk arena oprec Gamaforce"
+requires-python = ">=3.10"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "ruff>=0.17,<1",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from lib import vision
 from lib import manuver as m
+from lib import vision
 from lib.drone import DT, batasi, sekarang
 
 TINGGI_RING = 2.6

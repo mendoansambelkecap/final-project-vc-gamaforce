@@ -11,7 +11,6 @@ FOKUS = 554.0
 
 
 def sejajarkan_depan(d, cari, sumbu='xy', toleransi=15, stabil=8, gain=0.004, vmax=0.5, timeout=25):
-    awal = d.titik()
     pas = 0
     hilang = 0
     t = sekarang() + timeout
